@@ -45,6 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "tga.h"
 
 #include "gl_scenes/mirror.h"
+#include "gl_scenes/tracker.h"
 #include "gl_scenes/sobel.h"
 #include "gl_scenes/square.h"
 #include "gl_scenes/teapot.h"
