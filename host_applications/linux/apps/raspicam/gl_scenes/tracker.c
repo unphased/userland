@@ -11,8 +11,8 @@ All rights reserved.
 
 int mirror_open(RASPITEX_STATE *state)
 {
-   state->ops.gl_init = mirror_init;
-   state->ops.redraw = mirror_redraw;
+   state->ops.gl_init = tracker_init;
+   state->ops.redraw = tracker_redraw;
    state->ops.update_texture = raspitexutil_update_texture;
    return 0;
 }
