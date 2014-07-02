@@ -7,7 +7,7 @@ All rights reserved.
 #include "RaspiTexUtil.h"
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
-#include <EGL/glext.h>
+#include <EGL/eglext.h>
 
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
    .vertex_source = 
