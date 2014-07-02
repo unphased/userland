@@ -20,8 +20,8 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
    .fragment_source = 
       "#extension GL_OES_EGL_image_external : require\n"
       "uniform samplerExternalOES tex;\n",
-   .uniform_names = {},
-   .attribute_names = {},
+   .uniform_names = {"tex"},
+   .attribute_names = {"vertex"},
 };
 
 static int tracker_init(RASPITEX_STATE *state)
@@ -36,6 +36,30 @@ end:
 }
 
 static int tracker_redraw(RASPITEX_STATE * raspitex_state) {
+    // Start with a clear screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Bind the OES texture which is used to render the camera preview
+    glBindTexture(GL_TEXTURE_EXTERNAL_OES, raspitex_state->texture);
+
+    GLCHK(glUseProgram(tracker_shader.program));
+    GLCHK(glEnableVertexAttribArray(tracker_shader.attribute_locations[0]));
+    GLfloat varray[] = { // two tris for full screen NDC quad
+        -1.0f, -1.0f,
+        1.0f,  1.0f,
+        1.0f, -1.0f,
+
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+        -1.0f, -1.0f,
+    };
+    GLCHK(glVertexAttribPointer(tracker_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray));
+    // GLCHK(glUniform1f(tracker_shader.uniform_locations[1], offset));
+    GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
+
+    GLCHK(glDisableVertexAttribArray(tracker_shader.attribute_locations[0]));
+    GLCHK(glUseProgram(0));
+    return 0;
 }
 
 int mirror_open(RASPITEX_STATE *state)
