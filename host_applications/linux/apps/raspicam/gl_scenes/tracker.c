@@ -62,7 +62,7 @@ static int tracker_redraw(RASPITEX_STATE * raspitex_state) {
     return 0;
 }
 
-int mirror_open(RASPITEX_STATE *state)
+int tracker_open(RASPITEX_STATE *state)
 {
    state->ops.gl_init = tracker_init;
    state->ops.redraw = tracker_redraw;
