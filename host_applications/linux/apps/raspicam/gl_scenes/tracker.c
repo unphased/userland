@@ -31,7 +31,6 @@ static int tracker_init(RASPITEX_STATE *state)
        goto end;
 
     rc = raspitexutil_build_shader_program(&tracker_shader);
-    fprintf(stderr, "build shader program rc: %d", rc);
 end:
     return rc;
 }
