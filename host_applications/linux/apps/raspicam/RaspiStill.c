@@ -394,6 +394,7 @@ static int parse_cmdline(int argc, const char **argv, RASPISTILL_STATE *state)
          continue;
 
       //  We are now dealing with a command line option
+      fprintf(stderr, "Now dealing with command line option #%d\n", command_id);
       switch (command_id)
       {
       case CommandHelp:
