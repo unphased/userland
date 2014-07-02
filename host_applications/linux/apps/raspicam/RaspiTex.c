@@ -162,11 +162,11 @@ int raspitex_parse_cmdline(RASPITEX_STATE *state,
             state->scene_id = RASPITEX_SCENE_SOBEL;
          else if (strcmp(arg2, "tracker") == 0) {
             state->scene_id = RASPITEX_SCENE_TRACKER;
-            fprintf(stderr, "tracker scene specified, yay!\n");
+            printf("tracker scene specified, yay!\n");
          }
          else {
             vcos_log_error("Unknown scene %s", arg2);
-            fprintf(stderr, "Unknown scene specified\n");
+            printf("Unknown scene specified %s\n", arg2);
          }
          used = 2;
          break;

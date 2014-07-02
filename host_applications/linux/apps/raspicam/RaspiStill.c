@@ -599,6 +599,9 @@ static int parse_cmdline(int argc, const char **argv, RASPISTILL_STATE *state)
          // result indicates how many parameters were used up, 0,1,2
          // but we adjust by -1 as we have used one already
          const char *second_arg = (i + 1 < argc) ? argv[i + 1] : NULL;
+
+         fprintf(stderr, "parsing extra cmdline args now... %s %s", &argv[i][1], second_arg);
+
          int parms_used = raspicamcontrol_parse_cmdline(&state->camera_parameters, &argv[i][1], second_arg);
 
          // Still unused, try preview options
