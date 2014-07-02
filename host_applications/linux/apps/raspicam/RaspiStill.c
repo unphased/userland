@@ -601,7 +601,7 @@ static int parse_cmdline(int argc, const char **argv, RASPISTILL_STATE *state)
          // but we adjust by -1 as we have used one already
          const char *second_arg = (i + 1 < argc) ? argv[i + 1] : NULL;
 
-         fprintf(stderr, "parsing extra cmdline args now... %s %s", &argv[i][1], second_arg);
+         fprintf(stderr, "parsing extra cmdline args now... %s %s\n", &argv[i][1], second_arg);
 
          int parms_used = raspicamcontrol_parse_cmdline(&state->camera_parameters, &argv[i][1], second_arg);
 
