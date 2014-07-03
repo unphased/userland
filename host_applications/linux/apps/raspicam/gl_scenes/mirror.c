@@ -61,7 +61,7 @@ static RASPITEXUTIL_SHADER_PROGRAM_T mirror_shader = {
     "       gl_FragColor = texture2D(tex, pos);\n"
     "    }\n"
     "    else {\n"
-    "       gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);\n"
+    "       gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
     "    }\n"
     "}\n",
     .uniform_names = {"tex", "offset"},

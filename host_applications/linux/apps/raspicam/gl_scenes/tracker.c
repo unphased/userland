@@ -19,8 +19,13 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
       "}\n",
    .fragment_source = 
       "#extension GL_OES_EGL_image_external : require\n"
-      "uniform samplerExternalOES tex;\n",
-   .uniform_names = {"tex"},
+      "uniform samplerExternalOES tex;\n"
+      "uniform vec2 position;\n"
+      "varying vec2 texcoord;\n"
+      "void main() {\n"
+      "  gl_FragColor = vec4();\n"
+      "}\n",
+   .uniform_names = {"tex", "position"},
    .attribute_names = {"vertex"},
 };
 
