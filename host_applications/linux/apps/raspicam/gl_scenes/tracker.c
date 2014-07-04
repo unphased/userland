@@ -23,7 +23,7 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
       "uniform vec2 position;\n"
       "varying vec2 texcoord;\n"
       "void main() {\n"
-      "  gl_FragColor = vec4();\n"
+      "  gl_FragColor = vec4(1.0,0.0,0.0,1.0);\n"
       "}\n",
    .uniform_names = {"tex", "position"},
    .attribute_names = {"vertex"},
