@@ -54,6 +54,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 #include <memory.h>
 #include <unistd.h>
+#include <termios.h>
 #include <errno.h>
 #include <sysexits.h>
 
@@ -578,10 +579,6 @@ static int parse_cmdline(int argc, const char **argv, RASPISTILL_STATE *state)
 
       case CommandKeypress: // Set keypress between capture mode
          state->frameNextMethod = FRAME_NEXT_KEYPRESS;
-         // set buffering of stdin (this probably wont work due to terminal line
-         // buffering
-         setvbuf(stdin,NULL,_IONBF,0);
-
          break;
 
       case CommandSignal:   // Set SIGUSR1 between capture mode
@@ -1298,6 +1295,26 @@ static void signal_handler(int signal_number)
    }
 }
 
+// getch lets us avoid having to hit enter
+char getch() {
+   char buf = 0;
+   struct termios old = {0};
+   if (tcgetattr(0, &old) < 0)
+      perror("tcsetattr()");
+   old.c_lflag &= ~ICANON;
+   old.c_lflag &= ~ECHO;
+   old.c_cc[VMIN] = 1;
+   old.c_cc[VTIME] = 0;
+   if (tcsetattr(0, TCSANOW, &old) < 0)
+      perror("tcsetattr ICANON");
+   if (read(0, &buf, 1) < 0)
+      perror("read()");
+   old.c_lflag |= ICANON;
+   old.c_lflag |= ECHO;
+   if (tcsetattr(0, TCSADRAIN, &old) < 0)
+      perror("tcsetattr ~ICANON");
+   return (buf);
+}
 
 /**
  * Function to wait in various ways (depending on settings) for the next frame
