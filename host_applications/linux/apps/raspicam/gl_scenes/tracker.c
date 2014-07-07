@@ -48,7 +48,7 @@ static int tracker_init(RASPITEX_STATE *state)
 
     rc = raspitexutil_build_shader_program(&tracker_shader);
     // TODO: Make this return value properly combine the two shader compilations
-    rc = raspitexutil_build_shader_program(&tracker_blob_shader);
+    // rc = raspitexutil_build_shader_program(&tracker_blob_shader);
 end:
     return rc;
 }
