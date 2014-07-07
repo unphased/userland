@@ -1414,7 +1414,7 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
     	if (state->verbose)
          fprintf(stderr, "Press Enter to capture, or X to exit\n");
 
-      while (true) {
+      while (1) {
          ch = getch();
          if (ch == 'x' || ch == 'X')
             return 0;
