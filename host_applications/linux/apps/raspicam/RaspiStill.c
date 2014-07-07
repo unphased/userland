@@ -50,6 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _GNU_SOURCE
 
 #include <stdio.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #include <memory.h>
@@ -1411,17 +1412,27 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
     	int ch;
 
     	if (state->verbose)
-         fprintf(stderr, "Press Enter to capture, X then ENTER to exit\n");
+         fprintf(stderr, "Press Enter to capture, or X to exit\n");
 
-    	ch = getch();
-      fprintf(stderr, "getch() has returned. You have just hit the key %c\n", ch);
-    	*frame+=1;
-    	if (ch == 'x' || ch == 'X')
-    	   return 0;
-    	else
-    	{
- 	      return keep_running;
-    	}
+      while (true) {
+         ch = getch();
+         if (ch == 'x' || ch == 'X')
+            return 0;
+         else if (ch >= 97 && ch <= 122) {
+            fprintf(stderr, "getch() has returned. You have just hit the lower alphabetical key %c, decimal %d\n", ch, ch);
+         } else if (ch == 0x0A) { // enter takes a photo
+            break;
+         }
+         // all other key presses are ignored
+         if (isprint(ch)) {
+            fprintf(stderr, "getch() has returned. You have just hit the key %c, decimal %d\n", ch, ch);
+         } else {
+            fprintf(stderr, "getch() has returned. You have just hit the unprintable key decimal %d\n", ch, ch);
+         }
+      }
+
+      *frame+=1;
+      return keep_running;
    }
 
    case FRAME_NEXT_IMMEDIATELY :
