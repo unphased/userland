@@ -578,6 +578,10 @@ static int parse_cmdline(int argc, const char **argv, RASPISTILL_STATE *state)
 
       case CommandKeypress: // Set keypress between capture mode
          state->frameNextMethod = FRAME_NEXT_KEYPRESS;
+         // set buffering of stdin (this probably wont work due to terminal line
+         // buffering
+         setvbuf(stdin,NULL,_IONBF,0);
+
          break;
 
       case CommandSignal:   // Set SIGUSR1 between capture mode
