@@ -1393,6 +1393,7 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
          fprintf(stderr, "Press Enter to capture, X then ENTER to exit\n");
 
     	ch = getchar();
+      fprintf(stderr, "getchar() has returned.");
     	*frame+=1;
     	if (ch == 'x' || ch == 'X')
     	   return 0;
