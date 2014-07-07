@@ -1418,7 +1418,7 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
          ch = getch();
          if (ch == 'x' || ch == 'X')
             return 0;
-         } else if (ch == 0x0A) { // enter takes a photo
+         else if (ch == 0x0A) { // enter takes a photo
             fprintf(stderr, "getch() has returned 0x0A, a photo will be taken if parameters were provided.");
             break;
          }
