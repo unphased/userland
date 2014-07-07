@@ -1427,7 +1427,7 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
          if (isprint(ch)) {
             fprintf(stderr, "getch() has returned. You have just hit the key %c, decimal %d\n", ch, ch);
          } else {
-            fprintf(stderr, "getch() has returned. You have just hit the unprintable key decimal %d\n", ch, ch);
+            fprintf(stderr, "getch() has returned. You have just hit the unprintable key decimal %d\n", ch);
          }
       }
 
