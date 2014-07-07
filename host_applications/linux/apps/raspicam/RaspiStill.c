@@ -1418,16 +1418,15 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
          ch = getch();
          if (ch == 'x' || ch == 'X')
             return 0;
-         else if (ch >= 97 && ch <= 122) {
-            fprintf(stderr, "getch() has returned. You have just hit the lower alphabetical key %c, decimal %d\n", ch, ch);
          } else if (ch == 0x0A) { // enter takes a photo
+            fprintf(stderr, "getch() has returned 0x0A, a photo will be taken if parameters were provided.");
             break;
          }
          // all other key presses are ignored
          if (isprint(ch)) {
-            fprintf(stderr, "getch() has returned. You have just hit the key %c, decimal %d\n", ch, ch);
+            fprintf(stderr, "getch() has returned. You have just hit the key %c, 0x%02X\n", ch, ch);
          } else {
-            fprintf(stderr, "getch() has returned. You have just hit the unprintable key decimal %d\n", ch);
+            fprintf(stderr, "getch() has returned. You have just hit the unprintable key 0x%02X\n", ch);
          }
       }
 
