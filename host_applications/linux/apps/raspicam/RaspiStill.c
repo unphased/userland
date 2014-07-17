@@ -1317,6 +1317,10 @@ char getch() {
    return (buf);
 }
 
+extern GLfloat tracker_zoom = 1.0f;
+extern GLfloat tracker_zpos_x = 0.0f;
+extern GLfloat tracker_zpos_y = 0.0f;
+
 /**
  * Function to wait in various ways (depending on settings) for the next frame
  *
@@ -1425,6 +1429,32 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
          // all other key presses are ignored
          if (isprint(ch)) {
             fprintf(stderr, "getch() has returned. You have just hit the key %c, 0x%02X\n", ch, ch);
+            switch (ch) {
+               case 'w': tracker_zpos_y += 0.01;
+                         break;
+               case 'a': tracker_zpos_x -= 0.01;
+                         break;
+               case 's': tracker_zpos_y -= 0.01;
+                         break;
+               case 'd': tracker_zpos_x += 0.01;
+                         break;
+               case 'r': tracker_zoom *= 1.01;
+                         break;
+               case 'f': tracker_zpos_x *= 0.99;
+                         break;
+            }
+            if (tracker_zpos_y > 1)
+               tracker_zpos_y = 1;
+            if (tracker_zpos_y < -1)
+               tracker_zpos_y = -1;
+            if (tracker_zpos_x > 1)
+               tracker_zpos_x = 1;
+            if (tracker_zpos_x < -1)
+               tracker_zpos_x = -1;
+            if (tracker_zoom > 5)
+               tracker_zoom = 5;
+            if (tracker_zoom < 1)
+               tracker_zoom = 1;
          } else {
             fprintf(stderr, "getch() has returned. You have just hit the unprintable key 0x%02X\n", ch);
          }
