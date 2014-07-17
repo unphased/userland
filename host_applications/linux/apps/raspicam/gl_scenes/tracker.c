@@ -11,7 +11,7 @@ All rights reserved.
 
 // global state for keys to modify via raspistill
 GLfloat tracker_zoom = 1.0f;
-GLfloat tracker_zpos[] = {0.0f, 0.0f};
+GLfloat tracker_zpos[2] = {0.0f, 0.0f};
 
 // viewer shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
