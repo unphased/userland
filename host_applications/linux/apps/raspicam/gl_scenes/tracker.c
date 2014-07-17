@@ -18,12 +18,12 @@ GLfloat tracker_zpos_y = 0.0f;
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
    .vertex_source = 
       "attribute vec2 vertex;\n"
-      "varying vec2 texcoord;\n"
       "uniform float zoom;\n" // magnification 
       "uniform vec2 zpos;\n" // center of magnif in ndc style coordinates
+      "varying vec2 texcoord;\n"
       "void main(void) {\n"
       "  vec2 zoffset = (1.0 - 1.0/zoom) * vec2(0.5, 0.5);\n"
-      "  texcoord = (0.5 * (vertex + 1.0))/zoom + zoffset;\n" // TODO: aspect
+      "  texcoord = (0.5 * (vertex + 1.0 + zpos))/zoom + zoffset;\n" // TODO: aspect
       "  gl_Position = vec4(vertex, 0.0, 1.0);\n"
       "}\n",
    .fragment_source = 
