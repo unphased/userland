@@ -11,7 +11,8 @@ All rights reserved.
 
 // global state for keys to modify via raspistill
 GLfloat tracker_zoom = 1.0f;
-GLfloat tracker_zpos[2] = {0.0f, 0.0f};
+GLfloat tracker_zpos_x = 0.0f;
+GLfloat tracker_zpos_y = 0.0f;
 
 // viewer shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
@@ -79,7 +80,7 @@ static int tracker_redraw(RASPITEX_STATE * raspitex_state) {
    };
    GLCHK(glVertexAttribPointer(tracker_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray));
    GLCHK(glUniform1f(tracker_shader.uniform_locations[1], tracker_zoom));
-   GLCHK(glUniform2f(tracker_shader.uniform_locations[2], tracker_zpos));
+   GLCHK(glUniform2f(tracker_shader.uniform_locations[2], tracker_zpos_x, tracker_zpos_y));
    GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
 
    GLCHK(glDisableVertexAttribArray(tracker_shader.attribute_locations[0]));
