@@ -1317,9 +1317,9 @@ char getch() {
    return (buf);
 }
 
-extern GLfloat tracker_zoom = 1.0f;
-extern GLfloat tracker_zpos_x = 0.0f;
-extern GLfloat tracker_zpos_y = 0.0f;
+extern GLfloat tracker_zoom;
+extern GLfloat tracker_zpos_x;
+extern GLfloat tracker_zpos_y;
 
 /**
  * Function to wait in various ways (depending on settings) for the next frame
