@@ -1440,7 +1440,7 @@ static int wait_for_next_frame(RASPISTILL_STATE *state, int *frame)
                          break;
                case 'r': tracker_zoom *= 1.01;
                          break;
-               case 'f': tracker_zpos_x *= 0.99;
+               case 'f': tracker_zoom *= 0.99;
                          break;
             }
             if (tracker_zpos_y > 1)
