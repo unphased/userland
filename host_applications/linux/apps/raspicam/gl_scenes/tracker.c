@@ -14,6 +14,8 @@ GLfloat tracker_zoom = 1.0f;
 GLfloat tracker_zpos_x = 0.0f;
 GLfloat tracker_zpos_y = 0.0f;
 
+GLint tracker_texture;
+
 // viewer shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
    .vertex_source = 
@@ -47,6 +49,17 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_blob_shader = {
    .attribute_names = {},
 };
 
+static unsigned char blob_tex[] = {
+   255,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,255,0,
+   0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0,
+   0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0,
+   0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0,
+   0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0,
+   0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0,
+   0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0,
+   0,0,255, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 0,0,0, 255,255,0
+};
+
 static int tracker_init(RASPITEX_STATE *state)
 {
     int rc = raspitexutil_gl_init_2_0(state);
@@ -56,6 +69,13 @@ static int tracker_init(RASPITEX_STATE *state)
     rc = raspitexutil_build_shader_program(&tracker_shader);
     // TODO: Make this return value properly combine the two shader compilations
     // rc = raspitexutil_build_shader_program(&tracker_blob_shader);
+
+    // load texture
+    glGenTextures(1, &tracker_texture);
+    glBindTexture(GL_TEXTURE_2D, tracker_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, blob_tex);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST);
 end:
     return rc;
 }
