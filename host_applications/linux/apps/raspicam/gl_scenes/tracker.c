@@ -89,6 +89,7 @@ static int tracker_init(RASPITEX_STATE *state)
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR));
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST));
     GLCHK(glEnable(GL_BLEND));
+    GLCHK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 end:
     return rc;
 }
@@ -96,6 +97,7 @@ end:
 static int tracker_redraw(RASPITEX_STATE * raspitex_state) {
     // Start with a clear screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    GLCHK(glEnable(GL_BLEND));
 
     // Bind the OES texture which is used to render the camera preview
     glBindTexture(GL_TEXTURE_EXTERNAL_OES, raspitex_state->texture);
