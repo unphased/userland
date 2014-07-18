@@ -14,7 +14,7 @@ GLfloat tracker_zoom = 1.0f;
 GLfloat tracker_zpos_x = 0.0f;
 GLfloat tracker_zpos_y = 0.0f;
 
-GLint tracker_texture;
+GLuint tracker_texture;
 
 // viewer shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
