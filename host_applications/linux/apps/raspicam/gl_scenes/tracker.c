@@ -16,9 +16,7 @@ GLfloat tracker_zpos_y = 0.0f;
 
 GLuint tracker_texture;
 
-// viewer shader
-static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
-   .vertex_source = 
+static vertshader = 
       "attribute vec2 vertex;\n"
       "uniform float zoom;\n" // magnification 
       "uniform vec2 zpos;\n" // center of magnif in ndc style coordinates
@@ -27,7 +25,10 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
       "  vec2 zoffset = (1.0 - 1.0/zoom) * vec2(0.5, 0.5);\n"
       "  texcoord = (0.5 * (vertex + 1.0 + zpos))/zoom + zoffset;\n" // TODO: aspect
       "  gl_Position = vec4(vertex, 0.0, 1.0);\n"
-      "}\n",
+      "}\n";
+// viewer shader
+static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
+   .vertex_source = vertshader,
    .fragment_source = 
       "#extension GL_OES_EGL_image_external : require\n"
       "uniform samplerExternalOES tex;\n"
@@ -41,8 +42,7 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
 
 // blob detection shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_blob_shader = {
-   .vertex_source =
-      tracker_shader.vertex_source,
+   .vertex_source = vertshader,
    .fragment_source = 
       "uniform sampler2D tex;\n"
       "varying vec2 texcoord;\n"
