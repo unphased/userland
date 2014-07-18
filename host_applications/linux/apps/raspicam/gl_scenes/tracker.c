@@ -42,11 +42,15 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
 // blob detection shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_blob_shader = {
    .vertex_source =
-      "",
+      tracker_shader.vertex_source,
    .fragment_source = 
-      "",
-   .uniform_names = {},
-   .attribute_names = {},
+      "uniform sampler2D tex;\n"
+      "varying vec2 texcoord;\n"
+      "void main() {\n"
+      "  gl_FragColor = texture2D(tex, texcoord);\n"
+      "}\n",
+   .uniform_names = {"tex", "zoom", "zpos"},
+   .attribute_names = {"vertex"},
 };
 
 static unsigned char blob_tex[] = {
@@ -68,7 +72,7 @@ static int tracker_init(RASPITEX_STATE *state)
 
     rc = raspitexutil_build_shader_program(&tracker_shader);
     // TODO: Make this return value properly combine the two shader compilations
-    // rc = raspitexutil_build_shader_program(&tracker_blob_shader);
+    rc = raspitexutil_build_shader_program(&tracker_blob_shader);
 
     // load texture
     glGenTextures(1, &tracker_texture);
@@ -101,6 +105,17 @@ static int tracker_redraw(RASPITEX_STATE * raspitex_state) {
    GLCHK(glVertexAttribPointer(tracker_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray));
    GLCHK(glUniform1f(tracker_shader.uniform_locations[1], tracker_zoom));
    GLCHK(glUniform2f(tracker_shader.uniform_locations[2], tracker_zpos_x, tracker_zpos_y));
+   GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
+
+   GLCHK(glUseProgram(tracker_blob_shader.program));
+
+   // render the texture just to be able to see it
+   GLCHK(glVertexAttribPointer(tracker_blob_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray));
+   GLCHK(glUniform1i(tracker_blob_shader.uniform_locations[0], 0));
+   GLCHK(glUniform1f(tracker_blob_shader.uniform_locations[1], 0.2f));
+   GLCHK(glUniform2f(tracker_blob_shader.uniform_locations[2], tracker_zpos_x, tracker_zpos_y));
+   GLCHK(glActiveTexture(GL_TEXTURE0));
+   GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_texture);
    GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
 
    GLCHK(glDisableVertexAttribArray(tracker_shader.attribute_locations[0]));
