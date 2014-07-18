@@ -55,8 +55,7 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_blob_shader = {
       "uniform sampler2D tex;\n"
       "varying vec2 texcoord;\n"
       "void main() {\n"
-      "  gl_FragColor = texture2D(tex, texcoord);\n"
-      "  gl_FragColor.a = 0.4;\n"
+      "  gl_FragColor = vec4(texture2D(tex, texcoord).rgb, 0.4);\n"
       "}\n",
    .uniform_names = {"tex", "zoom", "zpos"},
    .attribute_names = {"vertex"},
@@ -88,7 +87,7 @@ static int tracker_init(RASPITEX_STATE *state)
     GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_texture));
     GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, blob_tex));
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR));
-    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_LINEAR));
 end:
     return rc;
 }
