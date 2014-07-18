@@ -16,7 +16,7 @@ GLfloat tracker_zpos_y = 0.0f;
 
 GLuint tracker_texture;
 
-static vertshader = 
+static const char *vertshader = 
       "attribute vec2 vertex;\n"
       "uniform float zoom;\n" // magnification 
       "uniform vec2 zpos;\n" // center of magnif in ndc style coordinates
