@@ -83,11 +83,11 @@ static int tracker_init(RASPITEX_STATE *state)
     rc = raspitexutil_build_shader_program(&tracker_blob_shader);
 
     // load texture
-    glGenTextures(1, &tracker_texture);
-    glBindTexture(GL_TEXTURE_2D, tracker_texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, blob_tex);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST);
+    GLCHK(glGenTextures(1, &tracker_texture));
+    GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_texture));
+    GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, blob_tex));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST));
 end:
     return rc;
 }
@@ -123,7 +123,7 @@ static int tracker_redraw(RASPITEX_STATE * raspitex_state) {
    GLCHK(glUniform1f(tracker_blob_shader.uniform_locations[1], 0.2f));
    GLCHK(glUniform2f(tracker_blob_shader.uniform_locations[2], tracker_zpos_x, tracker_zpos_y));
    GLCHK(glActiveTexture(GL_TEXTURE0));
-   GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_texture);
+   GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_texture));
    GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
 
    GLCHK(glDisableVertexAttribArray(tracker_shader.attribute_locations[0]));
