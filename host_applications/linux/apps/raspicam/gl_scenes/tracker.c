@@ -56,6 +56,7 @@ static RASPITEXUTIL_SHADER_PROGRAM_T tracker_blob_shader = {
       "varying vec2 texcoord;\n"
       "void main() {\n"
       "  gl_FragColor = texture2D(tex, texcoord);\n"
+      "  gl_FragColor.a = 0.4;\n"
       "}\n",
    .uniform_names = {"tex", "zoom", "zpos"},
    .attribute_names = {"vertex"},
