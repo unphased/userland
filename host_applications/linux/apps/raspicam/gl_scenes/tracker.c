@@ -87,7 +87,8 @@ static int tracker_init(RASPITEX_STATE *state)
     GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_texture));
     GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, blob_tex));
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR));
-    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_LINEAR));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST));
+    GLCHK(glEnable(GL_BLENDING));
 end:
     return rc;
 }
