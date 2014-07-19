@@ -121,6 +121,8 @@ static int tracker_init(RASPITEX_STATE *state)
     GLCHK(status = glCheckFramebufferStatus(GL_FRAMEBUFFER));
     if (status != GL_FRAMEBUFFER_COMPLETE) {
        fprintf(stderr, "FRAMEBUFFER ERROR: NOT COMPLETE\n");
+    } else {
+       fprintf(stderr, "Framebuffer Object initialization: FBO complete\n");
     }
 
     // return to regular rendering
