@@ -15,6 +15,12 @@ GLfloat tracker_zpos_x = 0.0f;
 GLfloat tracker_zpos_y = 0.0f;
 
 GLuint tracker_texture;
+GLuint tracker_rendertexture;
+
+GLuint tracker_framebuffer;
+
+// leave this off eventually so that it doesnt slow shit down
+#define CHECK_GL_ERRORS
 
 // viewer shader
 static RASPITEXUTIL_SHADER_PROGRAM_T tracker_shader = {
@@ -90,8 +96,35 @@ static int tracker_init(RASPITEX_STATE *state)
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST));
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLfloat)GL_CLAMP_TO_EDGE));
     GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLfloat)GL_CLAMP_TO_EDGE));
+
+    // set blending because that's always useful for showing more information
     GLCHK(glEnable(GL_BLEND));
     GLCHK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+    // initialize the renderbuffer texture for render to texture use
+    GLCHK(glGenTextures(1, &tracker_rendertexture));
+    GLCHK(glBindTexture(GL_TEXTURE_2D, tracker_rendertexture));
+    GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 8, 8, 0, GL_RGB, GL_UNSIGNED_BYTE, 0));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (GLfloat)GL_LINEAR));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (GLfloat)GL_NEAREST));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLfloat)GL_CLAMP_TO_EDGE));
+    GLCHK(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLfloat)GL_CLAMP_TO_EDGE));
+
+    // initialize the renderbuffer for getting some GPGPU style work done
+    // behind the scenes
+    GLCHK(glGenFramebuffers(1, &tracker_framebuffer));
+    GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, tracker_framebuffer));
+    // GLCHK(glGenRenderbuffers(1, &tracker_renderbuffer));
+    // GLCHK(glBindRenderbuffer(GL_RENDERBUFFER, tracker_renderbuffer));
+    GLCHK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tracker_rendertexture, 0));
+    GLenum status;
+    GLCHK(status = glCheckFramebufferStatus(GL_FRAMEBUFFER));
+    if (status != GL_FRAMEBUFFER_COMPLETE) {
+       fprintf(stderr, "FRAMEBUFFER ERROR: NOT COMPLETE\n");
+    }
+
+    // return to regular rendering
+    GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 end:
     return rc;
 }
